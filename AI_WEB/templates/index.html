@@ -2,6 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Lite - Gemini Dark</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
@@ -10,92 +11,136 @@
             --text: #e3e3e3; 
             --input-bar: #1e1f20; 
             --border: #3c4043;
+            --user-bubble: #2b2c2f;
+            --code-bg: #000000;
         }
 
-        /* 基础重置：确保不出现 X 轴滚动条 */
+        /* 基础重置：彻底消除全屏横向滚动 */
         * { box-sizing: border-box; }
-
-        body { 
+        body, html { 
+            margin: 0; padding: 0; 
             background: var(--bg); 
             color: var(--text); 
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
-            margin: 0; 
-            padding: 0;
-            overflow: hidden; /* 禁止 Body 滚动，由 #chat-content 接管 */
+            overflow: hidden; 
             width: 100vw;
         }
 
         #wrapper { 
-            width: 100%;
-            height: 100vh; 
             display: flex; 
             flex-direction: column; 
+            height: 100vh; 
+            width: 100%;
         }
 
-        /* 聊天区域：滚动条会出现在屏幕最右侧 */
+        /* 1. 聊天区：滚动条贴合屏幕最右侧 */
         #chat-content { 
             flex: 1; 
             overflow-y: auto; 
             overflow-x: hidden; 
-            width: 100%; /* 撑满全屏宽度 */
-            padding: 20px 0 120px 0; /* 底部留白给输入框 */
+            width: 100%;
+            padding-bottom: 150px; /* 为底部输入框留出足够空间 */
             scroll-behavior: smooth;
         }
 
-        /* 内容居中容器：限制文字显示的宽度 */
+        /* 2. 内容中心容器 */
         .msg-container {
-            max-width: 800px;
+            max-width: 850px;
             margin: 0 auto;
-            width: 90%; /* 小屏幕适配 */
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 35px;
         }
 
-        /* 自定义滚动条样式 (紧贴右侧) */
-        #chat-content::-webkit-scrollbar { width: 8px; }
-        #chat-content::-webkit-scrollbar-track { background: var(--bg); }
-        #chat-content::-webkit-scrollbar-thumb { background: #3c4043; border-radius: 10px; }
-        #chat-content::-webkit-scrollbar-thumb:hover { background: #4d5156; }
-
-        /* 消息样式 */
+        /* 用户消息样式 */
+        .user-row {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+        }
         .user { 
-            align-self: flex-end; 
-            background: #2b2c2f; 
+            background: var(--user-bubble); 
             padding: 12px 24px; 
             border-radius: 24px; 
             max-width: 85%; 
             word-wrap: break-word;
-            color: #fff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            line-height: 1.6;
         }
 
-        .ai { 
-            align-self: flex-start; 
-            line-height: 1.7; 
-            color: #e3e3e3; 
-            width: 100%; 
+        /* 3. AI 消息样式：解决并排问题的关键 */
+        .ai-row {
             display: flex;
+            align-items: flex-start;
             gap: 16px;
+            width: 100%;
         }
         
-        .ai::before {
-            content: "✨";
+        .ai-icon {
             font-size: 20px;
             flex-shrink: 0;
+            margin-top: 5px;
         }
 
-        /* 固定底部的输入区 */
+        /* AI 内容容器：强制内部元素垂直排列 */
+        .ai-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column; /* 关键：强制向下排列 */
+            gap: 12px;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Markdown 元素样式微调 */
+        .ai-content p { margin: 0; }
+        .ai-content h1, .ai-content h2, .ai-content h3 { 
+            margin: 10px 0 5px 0; 
+            color: #fff;
+        }
+        
+        /* 列表样式修复 */
+        .ai-content ul, .ai-content ol { 
+            margin: 5px 0; 
+            padding-left: 25px; 
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* 4. 代码块样式 (```...```) */
+        .ai-content pre { 
+            background: var(--code-bg); 
+            padding: 16px; 
+            border-radius: 12px; 
+            overflow-x: auto; 
+            border: 1px solid var(--border);
+            margin: 10px 0;
+        }
+        .ai-content code { 
+            font-family: 'Consolas', 'Monaco', monospace; 
+            font-size: 14px;
+            color: #8ab4f8; /* 代码颜色 */
+        }
+        /* 行内代码样式 */
+        :not(pre) > code {
+            background: #3c4043;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #e3e3e3;
+        }
+
+        /* 5. 固定底部的输入区域 */
         #input-area { 
             position: fixed;
             bottom: 0;
             width: 100%;
-            padding: 20px 10px 30px 10px;
-            background: linear-gradient(transparent, var(--bg) 30%);
+            padding: 20px 15px 40px 15px;
+            background: linear-gradient(transparent, var(--bg) 40%);
         }
 
-        .bar-container {
-            max-width: 800px;
+        .bar-limit {
+            max-width: 850px;
             margin: 0 auto;
         }
 
@@ -106,7 +151,7 @@
             padding: 6px 24px; 
             border: 1px solid var(--border);
             align-items: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
         }
 
         input { 
@@ -114,7 +159,7 @@
             background: transparent; 
             border: none; 
             color: white; 
-            height: 48px; 
+            height: 50px; 
             outline: none; 
             font-size: 16px; 
         }
@@ -125,32 +170,34 @@
             border: none; 
             font-weight: bold; 
             cursor: pointer; 
+            padding: 0 10px;
             font-size: 16px;
-            padding-left: 15px;
-            transition: color 0.2s;
         }
 
-        button:hover { color: #aecbfa; }
-
-        /* Markdown 内部样式微调 */
-        .ai p { margin: 0 0 10px 0; }
-        .ai code { background: #3c4043; padding: 2px 5px; border-radius: 4px; }
-        .ai pre { background: #000; padding: 15px; border-radius: 12px; overflow-x: auto; }
+        /* 滚动条美化 */
+        #chat-content::-webkit-scrollbar { width: 8px; }
+        #chat-content::-webkit-scrollbar-thumb { background: #3c4043; border-radius: 10px; }
+        #chat-content::-webkit-scrollbar-track { background: transparent; }
     </style>
 </head>
 <body>
 
 <div id="wrapper">
     <div id="chat-content">
-        <div class="msg-container" id="box-inner">
-            <div class="ai">你好！我是 Qwen2.5。界面已优化：滚动条现在位于浏览器最右侧，取消了横向滚动。有什么我可以帮你的？</div>
+        <div class="msg-container" id="chat-box">
+            <div class="ai-row">
+                <div class="ai-icon">✨</div>
+                <div class="ai-content">
+                    你好！我已经重新设计了排版。现在代码块、列表和文字都会完美垂直排列，不会再并排错位。
+                </div>
+            </div>
         </div>
     </div>
     
     <div id="input-area">
-        <div class="bar-container">
+        <div class="bar-limit">
             <div class="bar">
-                <input type="text" id="u-in" placeholder="在这里输入消息..." onkeypress="if(event.keyCode==13) send()">
+                <input type="text" id="u-in" placeholder="问问我任何问题..." onkeypress="if(event.keyCode==13) send()">
                 <button onclick="send()">发送</button>
             </div>
         </div>
@@ -162,22 +209,26 @@
 
     async function send() {
         const input = document.getElementById('u-in');
-        const boxInner = document.getElementById('box-inner');
+        const box = document.getElementById('chat-box');
         const scrollContainer = document.getElementById('chat-content');
         
         const val = input.value.trim(); 
         if(!val) return;
 
-        // 1. 添加用户消息
-        boxInner.innerHTML += `<div class="user">${val}</div>`;
+        // 1. 插入用户消息
+        box.innerHTML += `
+            <div class="user-row">
+                <div class="user">${val}</div>
+            </div>`;
         input.value = '';
         
-        // 2. 创建 AI 回复容器
-        const aiDiv = document.createElement('div');
-        aiDiv.className = 'ai';
-        boxInner.appendChild(aiDiv);
+        // 2. 插入 AI 响应占位符
+        const aiRow = document.createElement('div');
+        aiRow.className = 'ai-row';
+        aiRow.innerHTML = `<div class="ai-icon">✨</div><div class="ai-content">...</div>`;
+        box.appendChild(aiRow);
         
-        // 自动滚动到底部
+        const aiContent = aiRow.querySelector('.ai-content');
         scrollContainer.scrollTop = scrollContainer.scrollHeight;
 
         try {
@@ -203,20 +254,17 @@
                         try {
                             const data = JSON.parse(line.substring(6));
                             currentText += data.token;
-                            // 渲染 Markdown
-                            aiDiv.innerHTML = marked.parse(currentText);
-                            // 实时滚动到底部
+                            // 使用 marked 解析 Markdown 并实时更新
+                            aiContent.innerHTML = marked.parse(currentText);
+                            // 保持滚动到底部
                             scrollContainer.scrollTop = scrollContainer.scrollHeight;
-                        } catch (e) {
-                            console.error("解析错误", e);
-                        }
+                        } catch (e) {}
                     }
                 }
             }
-            // 更新历史记录
             hist.push({role: "user", content: val}, {role: "assistant", content: currentText});
         } catch (e) {
-            aiDiv.innerHTML = "❌ 连接失败，请确保后端服务已启动。";
+            aiContent.innerHTML = "❌ 无法连接到 AI 服务器，请确认后端已启动。";
         }
     }
 </script>
