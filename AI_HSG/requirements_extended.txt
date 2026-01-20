@@ -1,0 +1,28 @@
+# 基础依赖（所有版本都需要）
+flask==3.0.0
+torch==2.1.0
+transformers==4.36.0
+
+# JSON 版本（无需额外依赖）
+# 使用 hsg_engine_json.py
+
+# RAG 向量数据库版本（推荐）
+# 使用 hsg_engine_rag.py
+sentence-transformers==2.2.2
+numpy==1.24.3
+
+# 数据库版本（无需额外依赖，使用内置 sqlite3）
+# 使用 hsg_engine_database.py
+
+# 可选：多格式文档支持
+PyPDF2==3.0.1              # PDF 支持
+python-docx==1.1.0         # Word 文档支持
+openpyxl==3.1.2            # Excel 支持
+pandas==2.1.4              # 数据处理
+
+# 可选：网页爬虫
+beautifulsoup4==4.12.2     # 网页解析
+requests==2.31.0           # HTTP 请求
+
+# 开发工具
+python-dotenv==1.0.0       # 环境变量管理

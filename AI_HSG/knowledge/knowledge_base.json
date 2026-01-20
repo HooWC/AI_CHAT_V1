@@ -1,0 +1,80 @@
+{
+    "company_info": {
+        "name": "Hong Seng Group",
+        "chinese_name": "丰成集团",
+        "country": "Malaysia",
+        "location": "Bandar Baru Bangi, Selangor, Malaysia",
+        "full_address": "Lot 53, Jalan 1/5, Seksyen 1, 43650 Bandar Baru Bangi, Selangor, Malaysia",
+        "description": "马来西亚综合性大集团，业务范围涵盖多个领域",
+        "important_note": "我们是马来西亚的公司"
+    },
+    "it_support": {
+        "documents_path": "\\\\192.1.1.8\\IT_Documents",
+        "documents_description": "IT部门的所有文档和技术支持文件存储在此位置",
+        "itsm_server": "http://hongseng.ddns.net/itsm 或 http://rs1/itsm",
+        "node_api": "https://192.1.1.30:2828",
+        "support_note": "如遇到任何技术问题，请访问ITSM系统提交工单",
+        "contact": "请通过ITSM系统联系IT部门"
+    },
+    "departments": {
+        "it": {
+            "name": "IT部门",
+            "role": "负责公司所有IT基础设施和技术支持",
+            "services": [
+                "系统维护",
+                "技术支持",
+                "网络管理",
+                "软件开发"
+            ]
+        }
+    },
+    "faq": [
+        {
+            "category": "IT",
+            "question": "IT部门的文档存放在哪里？",
+            "answer": "IT部门的所有文档存储在 \\\\192.1.1.8\\IT_Documents 目录下。您可以直接访问该网络路径查看和下载所需文档。",
+            "priority": "high",
+            "keywords": ["文档", "IT", "存放", "位置", "documents"]
+        },
+        {
+            "category": "ITSM",
+            "question": "ITSM系统的地址是什么？",
+            "answer": "ITSM系统的访问地址是 http://hongseng.ddns.net/itsm 或 http://rs1/itsm。您可以在该系统中提交工单、查看进度和获取技术支持。",
+            "priority": "high",
+            "keywords": ["ITSM", "系统", "地址", "网址"]
+        },
+        {
+            "category": "ITSM",
+            "question": "itsm项目要怎么找到？",
+            "answer": "ITSM项目的服务器地址是 http://hongseng.ddns.net/itsm 或 http://rs1/itsm。如果您需要登录或访问该系统，请使用此地址。如果遇到权限问题，请联系IT部门。",
+            "priority": "high",
+            "keywords": ["itsm", "项目", "查找", "地址"]
+        },
+        {
+            "category": "Company",
+            "question": "Hong Seng Group在哪里？公司地址是什么？",
+            "answer": "Hong Seng Group（丰成集团）总部位于马来西亚（Malaysia），具体地址是：Lot 53, Jalan 1/5, Seksyen 1, 43650 Bandar Baru Bangi, Selangor, Malaysia。",
+            "priority": "high",
+            "keywords": ["公司", "地址", "位置", "Malaysia", "马来西亚"]
+        },
+        {
+            "category": "Company",
+            "question": "你是谁？",
+            "answer": "我是Hong Seng Group（丰成集团）的AI助手，专门为马来西亚的丰成集团员工提供IT技术支持和公司信息查询服务。",
+            "priority": "high",
+            "keywords": ["身份", "介绍", "你是谁"]
+        },
+        {
+            "category": "IT",
+            "question": "如何联系IT支持？",
+            "answer": "您可以通过ITSM系统（http://hongseng.ddns.net/itsm 或 http://rs1/itsm）提交工单来联系IT支持团队。IT团队会及时处理您的请求并提供帮助。",
+            "priority": "medium",
+            "keywords": ["联系", "IT", "支持", "帮助"]
+        }
+    ],
+    "quick_links": {
+        "itsm": "http://hongseng.ddns.net/itsm 或 http://rs1/itsm",
+        "it_documents": "\\\\192.1.1.8\\IT_Documents",
+        "node_api": "https://192.1.1.30:2828"
+    }
+}
